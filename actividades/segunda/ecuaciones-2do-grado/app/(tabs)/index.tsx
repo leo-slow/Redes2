@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttontext: {
-    color: 'blue',
+    color: 'bluee',
     fontSize: 20,
   },
 });
