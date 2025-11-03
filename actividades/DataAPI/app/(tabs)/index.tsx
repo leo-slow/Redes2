@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Principal from "@/app/pages/Principal";
+import Graph from '../pages/Graph';
 
 const Stack = createStackNavigator();
 
@@ -13,6 +14,12 @@ export default function App(){
         component={Principal}
         options={{ headerShown: false }}
       />
+
+      <Stack.Screen
+        name="Graph"
+        component={Graph}
+        options={{ headerShown: false }}
+        />
     </Stack.Navigator>
   );
 }
