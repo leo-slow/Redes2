@@ -5,7 +5,7 @@ import Principal from "@/app/pages/Principal";
 
 const Stack = createStackNavigator();
 
-export default function App(){
+export default async function App(){
   return(
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
