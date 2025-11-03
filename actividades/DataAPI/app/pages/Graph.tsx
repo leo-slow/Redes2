@@ -6,14 +6,14 @@ import { Dimensions } from 'react-native';
 export default function Graph({ route }) {
     const { region, date, deaths, confirmed, active } = route.params;
 
-    // Obtener el ancho de la pantalla
+    // Obtiene el ancho de la pantalla
     const { width } = Dimensions.get('window');
 
     const data = {
         labels: ['Casos Confirmados', 'Muertes', 'Casos Activos'],
         datasets: [
             {
-                data: [confirmed, deaths, active], // Confirmados, Muertos, Activos
+                data: [confirmed, deaths, active],
                 color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // Color de las barras
                 barThickness: 20, // Grosor de las barras
             },
@@ -47,7 +47,7 @@ export default function Graph({ route }) {
                 <Text style={{ fontSize: 18, marginBottom: 10 }}>Estadísticas en {region} ({date})</Text>
                 <BarChart
                     data={data}
-                    width={width - 20} // Usando el ancho de la pantalla
+                    width={width - 20}
                     height={380}
                     chartConfig={chartConfig}
                     verticalLabelRotation={30}

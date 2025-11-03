@@ -10,9 +10,11 @@ export default function Card({ navigation, region, date, deaths, confirmed, acti
       confirmed: confirmed,
       active: active
     })}>
-      <Text>Region: {region}</Text>
-      <Text>Date: {date}</Text>
-      <Text>Deaths: {deaths}</Text>
+      <View>
+        <Text>Region: {region}</Text>
+        <Text>Date: {date}</Text>
+        <Text>Deaths: {deaths}</Text>
+      </View>
     </TouchableOpacity>
   );
 }
