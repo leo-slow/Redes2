@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { fetchApiData } from '../../scripts/fetchApiData';
 
+import Card from "@/components/Card";
+
 // Definir las interfaces para los datos
 interface Region {
   iso: string;
@@ -40,17 +42,13 @@ export default function Principal() {
   }, []);
 
   return (
-    <View style={style.container}>
+    <View style={styles.container}>
       <Text style={{ fontSize: 24, padding: 10 }}>COVID-19 DATA FROM API</Text>
       
       {data ? (
-        <ScrollView style={{ width: '100%' }}>
+        <ScrollView contentContainerStyle={ styles.data } style={styles.dataContainer}>
           {data.map((item, index) => (
-            <View key={index} style={style.dataContainer}>
-              <Text>Region: {item.region.name}</Text>
-              <Text>Date: {item.date}</Text>
-              <Text>Deaths: {item.deaths}</Text>
-            </View>
+              <Card region={item.region.name} date={item.date} deaths={item.deaths} />
           ))}
         </ScrollView>
       ) : (
@@ -60,7 +58,7 @@ export default function Principal() {
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
@@ -70,12 +68,13 @@ const style = StyleSheet.create({
     paddingTop: '10%',
   },
   dataContainer: {
-    marginTop: 10,
-    padding: 10,
-    alignItems: 'flex-start',
     width: '90%',
     borderWidth: 1,
     borderColor: '#ccc',
     marginBottom: 10,
+  },
+    data: {
+    justifyContent: "flex-start",
+    alignItems: 'center',
   },
 });
