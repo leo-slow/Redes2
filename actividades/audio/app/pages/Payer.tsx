@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { Audio } from 'expo-av';
 
 let currentSound: Audio.Sound | null = null;
@@ -31,38 +31,57 @@ export default function PlayerScreen({ route }) {
     };
   }, [sound]);
 
-  const handlePlayPause = async () => {
-    if (!sound) {
-      if (!songFile) {
-        console.error("No se encontró el archivo de audio para esta canción:", song.song_route);
-        return;
-      }
-
-      if (currentSound) {
-        await currentSound.stopAsync();
-        await currentSound.unloadAsync();
-        currentSound = null;
-      }
-
-      const { sound: newSound } = await Audio.Sound.createAsync(
-        songFile,
-        { shouldPlay: true }
+  const onPlaybackStatusUpdate = (status) => {
+    if (status.error) {
+      console.log('Error en la reproducción:', status.error);
+      Alert.alert(
+        'Error de reproducción',
+        'Ocurrió un problema durante la reproducción del archivo.'
       );
+    }
+  };
 
-      setSound(newSound);
-      setIsPlaying(true);
-      console.log("Reproduciendo:", song.name);
-      currentSound = newSound;
-    } else {
-      if (isPlaying) {
-        console.log("Pausando canción:", song.name);
-        await sound.pauseAsync();
-        setIsPlaying(false);
-      } else {
-        console.log("Reanudando canción:", song.name);
-        await sound.playAsync();
+  const handlePlayPause = async () => {
+    try {
+      if (!sound) {
+        if (!songFile) {
+          console.log("No se encontró el archivo de audio para esta canción:", song.song_route);
+          return;
+        }
+
+        if (currentSound) {
+          await currentSound.stopAsync();
+          await currentSound.unloadAsync();
+          currentSound = null;
+        }
+
+        const { sound: newSound } = await Audio.Sound.createAsync(
+          songFile,
+          { shouldPlay: true }
+        );
+
+        setSound(newSound);
         setIsPlaying(true);
+        console.log("Reproduciendo:", song.name);
+        currentSound = newSound;
+      } else {
+        if (isPlaying) {
+          console.log("Pausando canción:", song.name);
+          await sound.pauseAsync();
+          setIsPlaying(false);
+        } else {
+          console.log("Reanudando canción:", song.name);
+          await sound.playAsync();
+          setIsPlaying(true);
+        }
       }
+    } catch (error) {
+      console.error('Error al cargar o reproducir la canción:', error);
+      Alert.alert(
+        'Error al reproducir',
+        'No se pudo cargar el archivo de audio. Puede estar dañado o no existir.',
+        [{ text: 'Aceptar' }]
+      );
     }
   };
 
